@@ -19,4 +19,14 @@
     <servlet-name>AcadsToday</servlet-name>
     <url-pattern>/AcadsToday</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ValidateUser</display-name>
+    <servlet-name>ValidateUser</servlet-name>
+    <servlet-class>LogIn.ValidateUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ValidateUser</servlet-name>
+    <url-pattern>/ValidateUser</url-pattern>
+  </servlet-mapping>
 </web-app>
