@@ -29,4 +29,24 @@
     <servlet-name>ValidateUser</servlet-name>
     <url-pattern>/ValidateUser</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>course</display-name>
+    <servlet-name>course</servlet-name>
+    <servlet-class>course</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>course</servlet-name>
+    <url-pattern>/course</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>instructor</display-name>
+    <servlet-name>instructor</servlet-name>
+    <servlet-class>instructor</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>instructor</servlet-name>
+    <url-pattern>/instructor</url-pattern>
+  </servlet-mapping>
 </web-app>

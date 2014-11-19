@@ -29,17 +29,18 @@ Your Helper To a Better Course Selection.
 <div style="float:left;width:435px">
 <ul class="navmenu">
   <li><a href="./home.jsp">HOME</a></li>
-  <li><a href="/tl2">COURSE</a></li>
-  <li><a href="/tl3">INSTRUCTOR</a></li>
+  <li><a href="./course" accesskey="1">COURSE</a></li>
+  <li><a href="./instructor">INSTRUCTOR</a></li>
   <li><a href="/tl4">SEARCH</a><ul>
    <li><a href="/tl4/item1">Students</a></li>
    <li><a href="/tl4/i2">NewsFeed</a></li>
   </ul></li>
   <li><a href="/tl5">TIMELINE</a></li>
 </ul>
+
 </div>
 <div style="text-align: right;color: green;">
-<form action="ValidateUser" method="get">
+<form  method="get" action="ValidateUser">
 <input type="submit" value="Logout" style="color:green;border:thin;cursor: pointer;background-color:yellow ">
 <input type="hidden" name="SignUp" value="logout">
 </form>
@@ -47,7 +48,7 @@ Your Helper To a Better Course Selection.
 <p style="color:black;font:italic;"><i><b>Hello <%=session.getAttribute("Username") %> !</b></i></p>
  
  </div>
- 
+
  
  </body>
 </html>

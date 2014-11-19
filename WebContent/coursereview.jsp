@@ -4,20 +4,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="../menu.js" ></script>
-<link rel="stylesheet" type="text/css" href="./style.css" media="screen" />
-<title>AcadsToday</title>
-<%
+<title>Insert title here</title>
+<% 
 response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache-Control", "no-store");
 response.setHeader("Pragma", "no-cache");
 response.setDateHeader("Expires", 0);
 if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
 %>
-
 </head>
 <body>
 <jsp:include page="./Intro.jsp" />
- 
+
 </body>
 </html>

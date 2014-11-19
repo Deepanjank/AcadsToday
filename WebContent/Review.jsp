@@ -5,9 +5,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<% 
+response.setHeader("Cache-Control", "no-cache");
+response.setHeader("Cache-Control", "no-store");
+response.setHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
+%>
 </head>
 <body>
-<iframe src="Intro.jsp" width="1200" height="390" frameborder="0" style="overflow:hidden;" scrolling=no><p>Fallback text</p></iframe>
+
+<jsp:include page="./Intro.jsp" />
 <form action="Review" method="get" style="float:left;margin-left:100px">
 <div style="margin-left:200px">
 Enter your Review:<br><br>
@@ -19,6 +27,5 @@ Enter your Review:<br><br>
 <input type="submit" value="Submit Review">
 </div>
 </form>
-
 </body>
 </html>

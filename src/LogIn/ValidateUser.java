@@ -19,8 +19,8 @@ import javax.servlet.http.HttpSession;
  */
 public class ValidateUser extends HttpServlet {
 	private static final long serialVersionUID = 1L; 
-	Connection conn1 =null;
-	Statement st =null;
+	public static Connection conn1 =null;
+	public static Statement st =null;
 	public void init() throws ServletException {
 	String dbURL2 = "jdbc:postgresql://localhost/cs387";
     String user = "deepanjan";
@@ -37,17 +37,19 @@ public class ValidateUser extends HttpServlet {
     }
 	
     public ValidateUser() {
-        super();}
+    	super();
+        System.out.println("Shaktiman");
+    	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String regBool=request.getParameter("SignUp").toString();
 		if(regBool.equals("logout")){
-			System.out.println("Deepanjan");
-			HttpSession session = request.getSession(false);
-			if (session != null) {
-			    session.invalidate();
+			HttpSession session = request.getSession();
+				System.out.println("Deepanjan");
+				session.setAttribute("Username", null);
+				session.invalidate();
 			    response.sendRedirect("login.jsp");
-			}
+			    
 		}
 	}
 
@@ -68,7 +70,7 @@ public class ValidateUser extends HttpServlet {
 				try{
 					String retval="";
 					ResultSet rs;
-					rs=st.executeQuery("Select user_id from student where user_id = '"+strUserId+"' and password_= '"+strPassword+"'");
+					rs=st.executeQuery("Select user_id from student where user_id = '"+strUserId+"' and password= '"+strPassword+"'");
 					while(rs.next()){
 						retval=rs.getString(1);
 					}
@@ -82,6 +84,7 @@ public class ValidateUser extends HttpServlet {
 				}
 			if(isValidLogon) {
 				session.setAttribute("Username", strUserId);
+				session.setAttribute("connection", conn1);
 				response.sendRedirect("home.jsp");
 			} else {
 				strErrMsg = "User name or Password is invalid. Please try again.";
