@@ -59,20 +59,38 @@ public class course extends HttpServlet {
 				}
 				retval+="</select></div><div style=\"margin-left:300px\"><input type=\"submit\" value=\"Select\"><input type=\"hidden\" name=\"select_dept\" value=\"course_page\"></div></div></form>";
 				session.setAttribute("courses",retval);
+				
 				//System.out.println(retval);
 				response.sendRedirect("course.jsp");
 			}
 			else if(bool_course.equals("course_page")){
+				
 				String course_name=(String)request.getParameter("Courses");
+				
 				ResultSet rs;
-				System.out.println("palash");
 				if(course_name.equals("deepanjan")){
 					course_name=session.getAttribute("course_name").toString();
 				}
+				int count =0;
+				for(int i = 0; i < course_name.length(); i++){
+		            if(Character.isWhitespace(course_name.charAt(i))){
+		                count++;
+		                if(count==2){
+		                	count = i;
+		                	break;
+		                }
+		            }
+		        }
+				String course_id = course_name.toString().substring(0,6);
 				rs=st.executeQuery("Select review_text from coursereview where course_id='"+
-						course_name.toString().substring(0,6)+"';");
+						course_id+"';");
+				String query = "Select * from follow where course_id='"+course_id+
+						"' and user_id='"+session.getAttribute("Username")+"';";
+				System.out.println(query);
+				
 				int i=0;
 				String review_text="";
+				System.out.println("dfghj "+count);
 				while(rs.next() && i<=10){
 					review_text+="<br><br><br><div style=\"float:left;margin-left:125px; width: " +
 							"1000px;padding: 25px;text-align: left;font-size: 100%;color:" +
@@ -80,8 +98,43 @@ public class course extends HttpServlet {
 							"#ffe4b5\">"+rs.getString(1)+"</div><br><br><br>";
 					i++;
 				}
+				System.out.println("aaaaa");
+				rs=st.executeQuery(query);
+				if (!rs.next()){
+					session.setAttribute("follow", "Follow");
+					System.out.println("we don't have a follow");
+				}
+				else{
+					session.setAttribute("follow","Following");
+					System.out.println("Now we have a follow");
+				}
 				session.setAttribute("course_review_code", review_text);
 				session.setAttribute("course_name",course_name);
+				session.setAttribute("course_id",course_id);
+				session.setAttribute("jsp", "course_review");
+				response.sendRedirect("coursereview.jsp");
+			}
+			else if(bool_course.equals("follow")){
+				System.out.println("Reached here");
+				String follow = (String) session.getAttribute("follow");
+				String course = (String) session.getAttribute("course_id");
+				String user = (String) session.getAttribute("Username");
+				String jsp = (String) session.getAttribute("jsp");
+				System.out.println("here is "+course);
+				if(follow == "Follow"){
+					System.out.println("changing");
+					st.executeUpdate("insert into follow values('"+user+"','"+course+"');");
+					session.setAttribute("follow","Following");
+				}
+				else{
+					System.out.println("again changing");
+					String str = "delete from follow where user_id = '"+user+"' and course_id = '"+course+"';";
+					System.out.println(str);
+					st.executeUpdate(str);
+					
+					session.setAttribute("follow","Follow");
+				}
+				System.out.println("Finally");
 				response.sendRedirect("coursereview.jsp");
 			}
 		}
