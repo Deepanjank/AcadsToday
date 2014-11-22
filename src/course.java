@@ -25,6 +25,7 @@ public class course extends HttpServlet {
 		String pass = "najnapeed";
 
 		try {
+			System.out.println("vikasgarg");
 			Class.forName("org.postgresql.Driver");
 			conn1 = DriverManager.getConnection(dbURL2, user, pass);
 			st = conn1.createStatement();
@@ -63,6 +64,23 @@ public class course extends HttpServlet {
 			}
 			else if(bool_course.equals("course_page")){
 				String course_name=(String)request.getParameter("Courses");
+				ResultSet rs;
+				System.out.println("palash");
+				if(course_name.equals("deepanjan")){
+					course_name=session.getAttribute("course_name").toString();
+				}
+				rs=st.executeQuery("Select review_text from coursereview where course_id='"+
+						course_name.toString().substring(0,6)+"';");
+				int i=0;
+				String review_text="";
+				while(rs.next() && i<=10){
+					review_text+="<br><br><br><div style=\"float:left;margin-left:125px; width: " +
+							"1000px;padding: 25px;text-align: left;font-size: 100%;color:" +
+							"black;border: 1px solid navy;border-radius:25px;background-color:" +
+							"#ffe4b5\">"+rs.getString(1)+"</div><br><br><br>";
+					i++;
+				}
+				session.setAttribute("course_review_code", review_text);
 				session.setAttribute("course_name",course_name);
 				response.sendRedirect("coursereview.jsp");
 			}
@@ -94,7 +112,7 @@ public class course extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 	}
 
 }

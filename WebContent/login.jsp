@@ -33,7 +33,7 @@ Your Helper To a Better Course Selection.
 <div style="width:1200px;height:300px;margin-top:20px">
 	<div style="float:left; margin-left:100px;width:580px;background-color:#6699FF">
 		<div style="margin-left:20px;">
-			<form action="ValidateUser" method="post">
+			<form action="Validateuser" method="post">
 				 <H3 >Login</H3>
 				 <div style="float:left">
 				 	<div style="float:left">
@@ -58,7 +58,7 @@ Your Helper To a Better Course Selection.
 	</div>
 	<div style="margin-left:700px; background-color:#FFCC66">
 		<div style="margin-left:40px; padding:10px">
-			<form action="ValidateUser" method="post">
+			<form action="Validateuser" method="post">
 				 <H1>Sign Up</H1> 
 				 <br/>
 				 New Username

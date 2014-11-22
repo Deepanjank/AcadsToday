@@ -31,16 +31,16 @@ Your Helper To a Better Course Selection.
   <li><a href="./home.jsp">HOME</a></li>
   <li><a href="./course" accesskey="1">COURSE</a></li>
   <li><a href="./instructor">INSTRUCTOR</a></li>
-  <li><a href="/tl4">SEARCH</a><ul>
-   <li><a href="/tl4/item1">Students</a></li>
-   <li><a href="/tl4/i2">NewsFeed</a></li>
+  <li><a>SEARCH</a><ul>
+   <li><a href="./Search?type=students">Students</a></li>
+   <li><a href="./Search?type=newsfeed">NewsFeed</a></li>
   </ul></li>
   <li><a href="/tl5">TIMELINE</a></li>
 </ul>
 
 </div>
 <div style="text-align: right;color: green;">
-<form  method="get" action="ValidateUser">
+<form  method="get" action="Validateuser">
 <input type="submit" value="Logout" style="color:green;border:thin;cursor: pointer;background-color:yellow ">
 <input type="hidden" name="SignUp" value="logout">
 </form>

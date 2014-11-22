@@ -64,6 +64,23 @@ public class instructor extends HttpServlet {
 			else if(bool_instructor.equals("instructor_page")){
 				String instructor_name=(String)request.getParameter("instructors");
 				session.setAttribute("instructor_name",instructor_name);
+				ResultSet rs;
+				rs=st.executeQuery("Select instructor_id from instructor where name='"+instructor_name+"';");
+				rs.next();
+				String instructor_id=rs.getString(1);
+				session.setAttribute("instructor_id",instructor_id);
+				rs=st.executeQuery("Select review_text from instructorreview where instructor_id='"+
+						instructor_id.toString()+"';");
+				int i=0;
+				String review_text="";
+				while(rs.next() && i<=10){
+					review_text+="<br><br><br><div style=\"float:left;margin-left:125px; width: " +
+							"1000px;padding: 25px;text-align: left;font-size: 100%;color:" +
+							"black;border: 1px solid navy;border-radius:25px;background-color:" +
+							"#ffe4b5\">"+rs.getString(1)+"</div><br><br><br>";
+					i++;
+				}
+				session.setAttribute("instructor_review_code", review_text);
 				response.sendRedirect("instructorreview.jsp");
 			}
 		}

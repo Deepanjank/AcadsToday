@@ -14,6 +14,9 @@ if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
 %>
 </head>
 <body>
-<jsp:include page="./Intro.jsp" />
+<jsp:include page="./instructorreview_common.jsp" />
+</div>
+<%=session.getAttribute("instructor_review_code") %>
+</body>
 </body>
 </html>

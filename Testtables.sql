@@ -45,3 +45,99 @@ create table instructor
 insert into instructor values(123,'Abhiram Ranade',1,0.01);
 insert into instructor values(124,'Amitabh Sanyal',1,0.01);
 insert into instructor values(125,'Ajit.A.Diwan',1,0.01);
+create table newsfeed(
+ news_id varchar(20),
+ user_id varchar(15),
+ course_id varchar(8),
+ news_text varchar(100),
+ time_stamp varchar(8),
+ primary key(news_id),
+ foreign key(user_id) references student,
+ foreign key(course_id) references course
+);
+create table newstag(
+ news_id varchar(20),
+ tag varchar(20),
+ primary key(news_id,tag),
+ foreign key(news_id) references newsfeed
+);
+create table coursereview(
+ review_id varchar(20),
+ course_id varchar(20),
+ user_id varchar(15),
+ review_text varchar(20),
+ downvotes numeric(4),
+ upvotes numeric(4),
+ primary key(review_id),
+ foreign key(course_id) references course,
+ foreign key(user_id) references student
+);
+create table coursereview(
+ review_id varchar(20),
+ instructor_id varchar(20),
+ user_id varchar(15),
+ review_text varchar(20),
+ downvotes numeric(4),
+ upvotes numeric(4),
+ primary key(review_id),
+ foreign key(instructor_id) references instructor,
+ foreign key(user_id) references student
+);
+create table follow(
+user_id varchar(15),
+course_id varchar(15),
+primary key(user_id,course_id),
+foreign key(user_id) references student,
+foreign key(course_id) references course
+);
+create table instructorrating(
+user_id varchar(15),
+instructor_id varchar(20),
+rating numeric(1) check (rating>0 and rating<6),
+primary key(user_id,instructor_id),
+foreign key(user_id) references student,
+foreign key(instructor_id) references instructor
+);
+create table courserating(
+user_id varchar(15),
+course_id varchar(20),
+rating numeric(1) check (rating>0 and rating<6),
+primary key(user_id,course_id),
+foreign key(user_id) references student,
+foreign key(course_id) references course
+);
+create table instructorvotes(
+user_id varchar(15),
+review_id varchar(20),
+UporDown boolean,
+primary key(user_id,review_id),
+foreign key(user_id) references student,
+foreign key(review_id) references instructorreview
+);
+create table coursevotes(
+user_id varchar(15),
+review_id varchar(20),
+UporDown boolean,
+primary key(user_id,review_id),
+foreign key(user_id) references student,
+foreign key(review_id) references coursereview
+);
+create table material(
+material_id varchar(20),
+course_id  varchar(20),
+user_id   varchar(20),
+materialname varchar(20),
+material   bytea,
+rating   numeric(1,0) check(rating>=0 and rating<6),
+primary key(material_id),
+foreign key(course_id) references course,
+foreign key(user_id) references student
+);
+create table materialrating(
+material_id varchar(20),
+user_id   varchar(20),
+rating   numeric(1,0) check(rating>=0 and rating<6),
+primary key(material_id),
+foreign key(material_id) references material,
+foreign key(user_id) references student
+);
