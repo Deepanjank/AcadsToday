@@ -48,7 +48,7 @@ public class course extends HttpServlet {
 		String retval="";
 		try{
 			bool_course=request.getParameter("select_dept").toString();
-			if(bool_course.equals("course")){
+			if(bool_course.equals("course")){	//selected the department
 				String department=request.getParameter("Departments");
 				ResultSet rs;
 				rs=st.executeQuery("Select course_id,title from department natural join course where dept_name='"+department+"';");
@@ -63,7 +63,7 @@ public class course extends HttpServlet {
 				//System.out.println(retval);
 				response.sendRedirect("course.jsp");
 			}
-			else if(bool_course.equals("course_page")){
+			else if(bool_course.equals("course_page")){ 	//selected the course in a department
 				
 				String course_name=(String)request.getParameter("Courses");
 				
@@ -114,7 +114,7 @@ public class course extends HttpServlet {
 				session.setAttribute("jsp", "course_review");
 				response.sendRedirect("coursereview.jsp");
 			}
-			else if(bool_course.equals("follow")){
+			else if(bool_course.equals("follow")){	//follow the particular course
 				System.out.println("Reached here");
 				String follow = (String) session.getAttribute("follow");
 				String course = (String) session.getAttribute("course_id");

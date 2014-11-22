@@ -35,7 +35,7 @@ Your Helper To a Better Course Selection.
    <li><a href="./Search?type=students">Students</a></li>
    <li><a href="./Search?type=newsfeed">NewsFeed</a></li>
   </ul></li>
-  <li><a href="/tl5">TIMELINE</a></li>
+  <li><a href="./timeline.jsp">TIMELINE</a></li>
 </ul>
 
 </div>

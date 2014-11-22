@@ -48,7 +48,6 @@ public class ValidateUser extends HttpServlet {
 				session.setAttribute("Username", null);
 				session.invalidate();
 			    response.sendRedirect("login.jsp");
-			    
 		}
 	}
 
@@ -66,10 +65,11 @@ public class ValidateUser extends HttpServlet {
 			String strPassword = request.getParameter("Password").toString();
 			boolean isValidLogon = true;
 			try {
+				ResultSet rs;
 				try{
 					String retval="";
-					ResultSet rs;
-					rs=st.executeQuery("Select user_id from student where user_id = '"+strUserId+"' and password= '"+strPassword+"'");
+					rs=st.executeQuery("Select user_id from student where user_id = '"+strUserId+"' and password= '"
+							+strPassword+"'");
 					while(rs.next()){
 						retval=rs.getString(1);
 					}
@@ -84,6 +84,15 @@ public class ValidateUser extends HttpServlet {
 			if(isValidLogon) {
 				session.setAttribute("Username", strUserId);
 				session.setAttribute("connection", conn1);
+				String followed="";
+				rs = st.executeQuery("select course_id,title from course natural join follow " +
+						"where user_id='"+strUserId+"'");
+				while(rs.next()){
+					followed+="\n<div style=\"float:left; margin-left:100px\"> <b>Courses followed:</b><br>" +
+							""+ rs.getString(1) +" &nbsp; &nbsp; "
+					+ rs.getString(2) + "</div>";
+				}
+				session.setAttribute("courses_followed",followed);
 				response.sendRedirect("home.jsp");
 			} else {
 				strErrMsg = "User name or Password is invalid. Please try again.";
