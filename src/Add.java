@@ -1,5 +1,7 @@
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +21,7 @@ import javax.servlet.http.Part;
 /**
  * Servlet implementation class Add
  */
+@MultipartConfig(maxFileSize = 16177215)
 public class Add extends HttpServlet {
 	private static final long serialVersionUID = 1L; 
 	public static Connection conn1 =null;
@@ -131,7 +135,9 @@ public class Add extends HttpServlet {
 					material_id++;
 					InputStream inputStream = null;
 					Part filePart = request.getPart("uploadField");
+					String fileName = request.getParameter("dispName");
 			        if (filePart != null) {
+			        	System.out.print("deepanjan");
 			            // prints out some information for debugging
 			            System.out.println(filePart.getName());
 			            System.out.println(filePart.getSize());
@@ -139,15 +145,19 @@ public class Add extends HttpServlet {
 			            inputStream = filePart.getInputStream();
 			        }
 			     // constructs SQL statement
-		            String sql = "INSERT INTO material values (material_id, user_id, material, name) values (?, ?, ?)";
-		            PreparedStatement statement = conn1.prepareStatement(sql);
-		            statement.setString(1, firstName);
-		            statement.setString(2, lastName);
-		             
-		            if (inputStream != null) {
-		                // fetches input stream of the upload file for the blob column
-		                statement.setBlob(3, inputStream);
+			        String sql = "INSERT INTO material (material_id, course_id, user_id, materialname, material, rating) values (?, ?, ?,?,?,?)";
+			        PreparedStatement statement = conn1.prepareStatement(sql);
+		            statement.setString(1, ""+material_id);
+		            statement.setString(2, session.getAttribute("course_name").toString().substring(0,6));
+		            statement.setString(3, session.getAttribute("Username").toString());
+		            statement.setString(4, "iam deepanjan");
+		          
+		            if (inputStream != null){
+		                statement.setBinaryStream(5, inputStream,(int)filePart.getSize());
 		            }
+		            statement.setInt(6,0);
+		            statement.executeUpdate();
+		            response.sendRedirect("./coursereview.jsp");
 				}
 				catch(Exception e){
 					material_id--;

@@ -27,18 +27,18 @@ document.forms.Form1.dispName.value = shortName
 
 <jsp:include page="./coursereview_common.jsp" />
 <br><br><br>
-<form name="material" action="Add" method="post">
+<form name="material" action="Add" method="post" enctype="multipart/form-data">
 <div style="margin-left:400px;color:blue">
 Browse your system to add a Material:<br><br>
 </div>
 <div style="margin-left:500px;">
-<input type="file" name="uploadField">
+<input type="file" name="uploadField" >
 <br><br>
 </div>
 <div style="margin-left:400px;color:blue">
 File Name for display:</div>
 <div style="margin-left:450px;">
-<input name='dispName' size=20><br><br>
+<input name="dispName" type="text" size=20><br><br>
 <br><br>
 </div>
 <div style="margin-left:500px;">
