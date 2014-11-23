@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -71,7 +72,24 @@ public class Add extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		String followed = "<div style=\"float:left; margin-left:100px\"> <b>Courses followed:</b>";
+		ResultSet rs;
+		String strUserId = (String)session.getAttribute("Username");
+		try{
+			rs = st.executeQuery("select course_id,title from course natural join follow " +
+					"where user_id='"+strUserId+"'");
+			while(rs.next()){	
+				followed+="<br>"+ rs.getString(1) +" &nbsp; &nbsp; " + rs.getString(2);
+			}
+			followed+= "</div>";
+			session.setAttribute("courses_followed",followed);
+			response.sendRedirect("timeline.jsp");
+		}
+		catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	/**
@@ -92,6 +110,7 @@ public class Add extends HttpServlet {
 					System.out.println(timestamp);
 					String news_text=(String)request.getParameter("News");
 					String tags=(String)request.getParameter("Tags");
+					//ResultSet rs;
 					st.executeUpdate("Insert into newsfeed values('"+news_id+"','"
 							+session.getAttribute("Username").toString()+"','"+
 							session.getAttribute("course_name").toString().substring(0, 6)

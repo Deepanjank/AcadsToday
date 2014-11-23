@@ -28,14 +28,14 @@ Your Helper To a Better Course Selection.
 <div style="float:left;margin-left:100px;width:1100px">
 <div style="float:left;width:435px">
 <ul class="navmenu">
-  <li><a href="./home.jsp">HOME</a></li>
+  <li><a href="./Validateuser">HOME</a></li>
   <li><a href="./course" accesskey="1">COURSE</a></li>
   <li><a href="./instructor">INSTRUCTOR</a></li>
   <li><a>SEARCH</a><ul>
    <li><a href="./Search?type=students">Students</a></li>
    <li><a href="./Search?type=newsfeed">NewsFeed</a></li>
   </ul></li>
-  <li><a href="./Validateuser">TIMELINE</a></li>
+  <li><a href="./Add">TIMELINE</a></li>
 </ul>
 
 </div>

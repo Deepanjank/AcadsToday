@@ -21,46 +21,61 @@ public class ValidateUser extends HttpServlet {
 	public static Connection conn1 =null;
 	public static Statement st =null;
 	public void init() throws ServletException {
-	String dbURL2 = "jdbc:postgresql://localhost/cs387";
-    String user = "deepanjan";
-    String pass = "najnapeed";
+		String dbURL2 = "jdbc:postgresql://localhost/cs387";
+		String user = "deepanjan";
+		String pass = "najnapeed";
 
-    try {
-		Class.forName("org.postgresql.Driver");
-		conn1 = DriverManager.getConnection(dbURL2, user, pass);
-		st = conn1.createStatement();
-		System.out.println("init"+conn1);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    }
-	
-    public ValidateUser() {
-    	super();
-        System.out.println("Shaktiman");
-    	}
+		try {
+			Class.forName("org.postgresql.Driver");
+			conn1 = DriverManager.getConnection(dbURL2, user, pass);
+			st = conn1.createStatement();
+			System.out.println("init"+conn1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ValidateUser() {
+		super();
+		System.out.println("Shaktiman");
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session;
 		session = request.getSession();
 
 		try{
-		String regBool=request.getParameter("SignUp").toString();
-		
-		if(regBool.equals("logout")){
-			System.out.println("Deepanjan");
-			session.setAttribute("Username", null);
-			session.invalidate();
-			response.sendRedirect("login.jsp");
-		}
-		/*else if(regBool.equals("timeline")){
+			String regBool=request.getParameter("SignUp").toString();
+
+			if(regBool.equals("logout")){
+				System.out.println("Deepanjan");
+				session.setAttribute("Username", null);
+				session.invalidate();
+				response.sendRedirect("login.jsp");
+			}
+			/*else if(regBool.equals("timeline")){
 			response.sendRedirect("timeline.jsp");
 		}*/
 		}
 		catch(NullPointerException e){
-			
-			System.out.println(session.getAttribute("courses_followed"));
-			response.sendRedirect("timeline.jsp");
+			String homenews = "<div style=\"float:left; margin-left:100px\"><p> <b>News Feed: </b><br>";
+			ResultSet rs;
+			String strUserId = (String) session.getAttribute("Username");
+			try {
+				rs = st.executeQuery("select course_id,news_text,time_stamp from newsfeed where user_id='"+
+						strUserId+"';");
+				while(rs.next()){
+					homenews+= "<br>"+rs.getString(1) + " &nbsp; &nbsp; " + rs.getString(2) + "&nbsp; &nbsp; " +
+					rs.getString(3);
+				}
+				homenews+="</div>";
+				session.setAttribute("home_news",homenews);
+				response.sendRedirect("home.jsp");
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 		}
 	}
 
@@ -68,12 +83,12 @@ public class ValidateUser extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		String regBool = request.getParameter("SignUp").toString();
 		//String timeline = request.getParameter("timeline").toString();
 		String strErrMsg = null;
 		HttpSession session = request.getSession();
-		
+
 		if(regBool.equals("login")){
 			String strUserId = request.getParameter("UserId").toString();
 			String strPassword = request.getParameter("Password").toString();
@@ -96,39 +111,31 @@ public class ValidateUser extends HttpServlet {
 				catch(Exception e){
 					e.printStackTrace();
 				}
-			if(isValidLogon) {
-				session.setAttribute("Username", strUserId);
-				session.setAttribute("connection", conn1);
-				
-				String followed="";
-				rs = st.executeQuery("select course_id,title from course natural join follow " +
-							"where user_id='"+strUserId+"'");
-				while(rs.next()){
-						followed+="<div style=\"float:left; margin-left:100px\"> <b>Courses followed:</b><br>" +
-								rs.getString(1) +" &nbsp; &nbsp; " + rs.getString(2) + "</div>";
+				if(isValidLogon) {
+					session.setAttribute("Username", strUserId);
+					session.setAttribute("connection", conn1);
+
+					String homenews = "<div style=\"float:left; margin-left:100px\"><p> <b>News Feed: </b><br>";
+					rs = st.executeQuery("select course_id,news_text,time_stamp from newsfeed where user_id='"+
+							strUserId+"';");
+					while(rs.next()){
+						homenews+= "<br>"+rs.getString(1) + " &nbsp; &nbsp; " + rs.getString(2) + "&nbsp; &nbsp; " +
+						rs.getString(3);
+					}
+					homenews+="</div>";
+					session.setAttribute("home_news",homenews);
+					response.sendRedirect("home.jsp");
+				} else {
+					strErrMsg = "User name or Password is invalid. Please try again.";
+					session.setAttribute("errorMsg", strErrMsg);
+					response.sendRedirect("login.jsp");
 				}
-				session.setAttribute("courses_followed",followed);
-				String homenews="";
-				rs = st.executeQuery("select course_id,news_text,time_stamp from newsfeed where user_id='"+
-						strUserId+"';");
-				while(rs.next()){
-					homenews+="<div style=\"float:left; margin-left:100px\"> <b>News Feed: </b><br>" +
-					rs.getString(1) + " &nbsp; &nbsp; " + rs.getString(2) + "&nbsp; &nbsp; " + rs.getString(3) + 
-					"</div>";
-				}
-				session.setAttribute("home_news",homenews);
-				response.sendRedirect("home.jsp");
-			} else {
-				strErrMsg = "User name or Password is invalid. Please try again.";
-				session.setAttribute("errorMsg", strErrMsg);
-				response.sendRedirect("login.jsp");
-			}
 			} catch(Exception e) {
 				strErrMsg = "Unable to validate user / password in database";
 				session.setAttribute("errorMsg", strErrMsg);
 				response.sendRedirect("login.jsp");
 			}
-			}
+		}
 		else if(regBool.equals("reg"))
 		{
 			String strUserId = request.getParameter("New UserId").toString();
@@ -141,6 +148,10 @@ public class ValidateUser extends HttpServlet {
 				st.executeUpdate("Insert into student values ( '"+strUserId+"','"+strPassword+"','"+
 						strRoll+"','"+strName+"','"+strDeptId+"','"+strEmail+"');");
 				session.setAttribute("Username", strUserId);
+				String followed = "<div style=\"float:left; margin-left:100px\"> <b>Courses followed:</b>";
+				String homenews = "<div style=\"float:left; margin-left:100px\"><p> <b>News Feed: </b><br>";
+				session.setAttribute("courses_followed",followed);
+				session.setAttribute("home_news",homenews);
 				response.sendRedirect("home.jsp");
 			}
 			catch(SQLException exception){
@@ -151,6 +162,6 @@ public class ValidateUser extends HttpServlet {
 			}
 		}
 	}
-	
+
 
 }
