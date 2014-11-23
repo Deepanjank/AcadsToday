@@ -17,15 +17,9 @@ if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
 </head>
 <body>
 <jsp:include page="./Intro.jsp" />
-<form action="Search" method="post">
 <div>
-<div style="float:left;margin-left:400px">
-<input class="required" type="text" name="search" height="20px" width="100px" size="20px" style="margin-left:73px" >
-</div>
-<div style="float:left; margin-left:0px">
-<input type="image" src="./search.jpg" alt="Submit Form" height="30px" width="30px">
-<%=session.getAttribute("search")%>
-</div>
+<%=session.getAttribute("searchresults")%>
+
 </div>
 </form>
 </body>

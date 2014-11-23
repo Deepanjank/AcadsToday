@@ -60,14 +60,31 @@ public class Search extends HttpServlet {
 		try{
 			String search_text=request.getParameter("search");
 			ResultSet rs;
+			String searchresults="";
 			if(session.getAttribute("search_type").equals("students")){
-			rs=st.executeQuery("Select user_id from student where user_id='"+search_text+"' or name='"+search_text+"'or email='"+search_text+"'or rollno='"+search_text+"'order by name;");
+			rs=st.executeQuery("Select course_id from student natural join follow " +
+					"where user_id='"+search_text+"' or name='"+
+					search_text+"' or email='"+search_text+"' or rollno='"+search_text+"' order by name;");
+			searchresults+= "<div style=\"float:left; margin-left:100px\"><p> <b>Courses followed by:" +
+					search_text + "are </b><br>";
+			while(rs.next()){
+				searchresults+="<br>" + rs.getString(1);
 			}
-			else if(session.getAttribute("search_type").equals("newsfeed")){
-			rs=st.executeQuery("Select name from news_feed where user_id='"+search_text+"' or name='"+search_text+"'or email='"+search_text+"'or rollno='"+search_text+"'order by name;");
+			searchresults+="</div>";
 			}
-			session.setAttribute("searchresults","");
-			response.sendRedirect("./Search.java");
+			else if(session.getAttribute("search_type").equals("newsfeed")){//search via user_id, course_id or tag
+			rs=st.executeQuery("Select user_id,news_text,time_stamp" +
+					" from newsfeed natural join newstag where user_id='"+search_text+"' or course_id='"+
+					search_text+"' or tag='"+search_text+"' order by time_stamp;");
+			searchresults += "<div style=\"float:left; margin-left:100px\"><p> <b>News Feed: </b><br>";
+			while(rs.next()){
+				searchresults+= "<br>"+rs.getString(1) + " &nbsp; &nbsp; " + rs.getString(2) + "&nbsp; &nbsp; " +
+				rs.getString(3);
+			}
+			searchresults+="</div>";
+			}
+			session.setAttribute("searchresults",searchresults);
+			response.sendRedirect("searchresults.jsp");
 		}
 		catch(Exception e){
 			e.printStackTrace();
