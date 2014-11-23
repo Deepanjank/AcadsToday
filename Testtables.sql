@@ -50,7 +50,7 @@ create table newsfeed(
  user_id varchar(15),
  course_id varchar(8),
  news_text varchar(100),
- time_stamp varchar(8),
+ time_stamp varchar(20),
  primary key(news_id),
  foreign key(user_id) references student,
  foreign key(course_id) references course
