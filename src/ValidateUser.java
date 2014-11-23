@@ -108,6 +108,15 @@ public class ValidateUser extends HttpServlet {
 								rs.getString(1) +" &nbsp; &nbsp; " + rs.getString(2) + "</div>";
 				}
 				session.setAttribute("courses_followed",followed);
+				String homenews="";
+				rs = st.executeQuery("select course_id,news_text,time_stamp from newsfeed where user_id='"+
+						strUserId+"';");
+				while(rs.next()){
+					homenews+="<div style=\"float:left; margin-left:100px\"> <b>News Feed: </b><br>" +
+					rs.getString(1) + " &nbsp; &nbsp; " + rs.getString(2) + "&nbsp; &nbsp; " + rs.getString(3) + 
+					"</div>";
+				}
+				session.setAttribute("home_news",homenews);
 				response.sendRedirect("home.jsp");
 			} else {
 				strErrMsg = "User name or Password is invalid. Please try again.";

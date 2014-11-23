@@ -4,11 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -82,12 +85,17 @@ public class Add extends HttpServlet {
 			if(method.equals("news")){
 				try{
 					news_id++;
+					//Timestamp timestamp = new java.sql.Timestamp((dateTime).getTime());
+					//Date date = new Date();
+					//Timestamp timestamp = new Timestamp(date.getTime());
+					String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+					System.out.println(timestamp);
 					String news_text=(String)request.getParameter("News");
 					String tags=(String)request.getParameter("Tags");
 					st.executeUpdate("Insert into newsfeed values('"+news_id+"','"
 							+session.getAttribute("Username").toString()+"','"+
 							session.getAttribute("course_name").toString().substring(0, 6)
-							+"','"+news_text+"');");
+							+"','"+news_text+"','"+timestamp+"');");
 					String[] temp=tags.split(" ");
 					for(int i=0;i<temp.length;i++)
 					{
