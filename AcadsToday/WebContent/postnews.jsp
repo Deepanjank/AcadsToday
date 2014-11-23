@@ -13,6 +13,7 @@ response.setDateHeader("Expires", 0);
 if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
 %>
 </head>
+<body>
 <jsp:include page="./coursereview_common.jsp" />
 <br><br><br><br>
 <form action="Add" method="post" style="float:left;margin-left:100px">
@@ -32,4 +33,8 @@ Tags:<br><br>
 <input type="hidden" name="type" value="course">
 <input type="hidden" name="add" value="news">
 </form>
+<div style="float:bottom ;">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
+</body>
 </html>

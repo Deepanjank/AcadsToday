@@ -93,5 +93,8 @@ Your Helper To a Better Course Selection.
 </div>
 <br>
 <br>
+<div style="float:bottom ;">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
 </body>
 </html>

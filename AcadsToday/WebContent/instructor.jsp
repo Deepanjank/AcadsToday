@@ -33,5 +33,8 @@ Select the department:
 </div>
 </form>
 <%=session.getAttribute("instructors") %>
+<div style="float:bottom ;">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
 </body>
 </html>
