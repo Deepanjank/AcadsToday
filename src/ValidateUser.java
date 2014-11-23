@@ -41,13 +41,26 @@ public class ValidateUser extends HttpServlet {
     	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session;
+		session = request.getSession();
+
+		try{
 		String regBool=request.getParameter("SignUp").toString();
+		
 		if(regBool.equals("logout")){
-			HttpSession session = request.getSession();
-				System.out.println("Deepanjan");
-				session.setAttribute("Username", null);
-				session.invalidate();
-			    response.sendRedirect("login.jsp");
+			System.out.println("Deepanjan");
+			session.setAttribute("Username", null);
+			session.invalidate();
+			response.sendRedirect("login.jsp");
+		}
+		/*else if(regBool.equals("timeline")){
+			response.sendRedirect("timeline.jsp");
+		}*/
+		}
+		catch(NullPointerException e){
+			
+			System.out.println(session.getAttribute("courses_followed"));
+			response.sendRedirect("timeline.jsp");
 		}
 	}
 
@@ -57,6 +70,7 @@ public class ValidateUser extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String regBool = request.getParameter("SignUp").toString();
+		//String timeline = request.getParameter("timeline").toString();
 		String strErrMsg = null;
 		HttpSession session = request.getSession();
 		
@@ -66,6 +80,7 @@ public class ValidateUser extends HttpServlet {
 			boolean isValidLogon = true;
 			try {
 				ResultSet rs;
+
 				try{
 					String retval="";
 					rs=st.executeQuery("Select user_id from student where user_id = '"+strUserId+"' and password= '"
@@ -84,13 +99,13 @@ public class ValidateUser extends HttpServlet {
 			if(isValidLogon) {
 				session.setAttribute("Username", strUserId);
 				session.setAttribute("connection", conn1);
+				
 				String followed="";
 				rs = st.executeQuery("select course_id,title from course natural join follow " +
-						"where user_id='"+strUserId+"'");
+							"where user_id='"+strUserId+"'");
 				while(rs.next()){
-					followed+="\n<div style=\"float:left; margin-left:100px\"> <b>Courses followed:</b><br>" +
-							""+ rs.getString(1) +" &nbsp; &nbsp; "
-					+ rs.getString(2) + "</div>";
+						followed+="<div style=\"float:left; margin-left:100px\"> <b>Courses followed:</b><br>" +
+								rs.getString(1) +" &nbsp; &nbsp; " + rs.getString(2) + "</div>";
 				}
 				session.setAttribute("courses_followed",followed);
 				response.sendRedirect("home.jsp");
@@ -125,7 +140,7 @@ public class ValidateUser extends HttpServlet {
 				session.setAttribute("errorMsg", type);
 				response.sendRedirect("login.jsp");
 			}
-		}	
+		}
 	}
 	
 
