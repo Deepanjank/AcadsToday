@@ -32,7 +32,7 @@ document.forms.Form1.dispName.value = shortName
 Browse your system to add a Material:<br><br>
 </div>
 <div style="margin-left:550px;">
-<input type="file" name="uploadField" >
+<input type="file" name="uploadField" onclick=getStats(this.value)>
 <br><br>
 </div>
 <div style="margin-left:450px;color:blue">
@@ -53,6 +53,8 @@ Description of the file:</div>
 <input type="hidden" name="type" value="course">
 <input type="hidden" name="add" value="material">
 </form>
-
+<div style="float:bottom ;">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
 </body>
 </html>

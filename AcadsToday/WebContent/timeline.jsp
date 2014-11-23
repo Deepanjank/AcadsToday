@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<iframe src="Intro.jsp" width="1200" height="390" frameborder="0" style="overflow:hidden;" scrolling=no><p>Fallback text</p></iframe>
-
+<jsp:include page="./Intro.jsp" />
 </body>
 </html>

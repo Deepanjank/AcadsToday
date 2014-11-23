@@ -30,5 +30,8 @@ Enter your Review:<br><br>
 <input type="hidden" name="type" value="course">
 <input type="hidden" name="add" value="review">
 </form>
+<div style="float:bottom ;margin-bottom:400px">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
 </body>
 </html>

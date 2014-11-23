@@ -86,7 +86,7 @@ public class Add extends HttpServlet {
 					String tags=(String)request.getParameter("Tags");
 					st.executeUpdate("Insert into newsfeed values('"+news_id+"','"
 							+session.getAttribute("Username").toString()+"','"+
-							session.getAttribute("course_name").toString().substring(0, 6)
+							session.getAttribute("course_id").toString()
 							+"','"+news_text+"');");
 					String[] temp=tags.split(" ");
 					for(int i=0;i<temp.length;i++)
@@ -106,19 +106,20 @@ public class Add extends HttpServlet {
 				course_review_id++;
 				String review_text=(String)request.getParameter("Review");
 				st.executeUpdate("Insert into coursereview values('"+course_review_id+"','"
-						+session.getAttribute("course_name").toString().substring(0, 6)+"','"+
+						+session.getAttribute("course_id").toString()+"','"+
 						session.getAttribute("Username").toString()+"','"+review_text+"',0,0);");
-				String course_name=session.getAttribute("course_name").toString();
+				String course_name=session.getAttribute("course_id").toString();
 				ResultSet rs;
-				rs=st.executeQuery("Select review_text from coursereview where course_id='"+
-						course_name.toString().substring(0,6)+"';");
+				rs=st.executeQuery("Select user_id,review_text from coursereview where course_id='"+
+						session.getAttribute("course_id").toString()+"' order by upvotes limit 10;");
 				int i=0;
 				review_text="";
-				while(rs.next() && i<=10){
-					review_text+="<br><br><br><div style=\"float:left;margin-left:125px; width: " +
-							"1000px;padding: 25px;text-align: left;font-size: 100%;color:" +
-							"black;border: 1px solid navy;border-radius:25px;background-color:" +
-							"#ffe4b5\">"+rs.getString(1)+"</div><br><br><br>";
+				while(rs.next()){
+					review_text+="<br><br><br><br><br><br><div style=\"float:left;margin-left:125px; width: " +
+					"1000px;padding: 25px;text-align: left;font-size: 100%;color:" +
+					"black;border: 1px solid navy;background-color:" +
+					"#f1ffff\">"+"<span style=\"font-size: 80%\"><i>by "+rs.getString(1)+
+					"</i></span><p>"+rs.getString(2)+"</p></div><br><br><br>";
 					i++;
 				}
 				session.setAttribute("course_review_code", review_text);
@@ -132,10 +133,13 @@ public class Add extends HttpServlet {
 			else if(method.equals("material")){
 				try{
 					material_id++;
+					System.out.println(material_id);
 					InputStream inputStream = null;
 					Part filePart = request.getPart("uploadField");
 					String fileName = request.getParameter("dispName");
 					String filedesc = request.getParameter("description");
+					String fileName2 = request.getParameter("uploadField");
+					System.out.println(fileName2);
 			        if (filePart != null) {
 			        	System.out.print("deepanjan");
 			            // prints out some information for debugging
@@ -148,7 +152,7 @@ public class Add extends HttpServlet {
 			        String sql = "INSERT INTO material (material_id, course_id, user_id, materialname, description, material, rating) values (?, ?, ?,?,?,?,?)";
 			        PreparedStatement statement = conn1.prepareStatement(sql);
 		            statement.setString(1, ""+material_id);
-		            statement.setString(2, session.getAttribute("course_name").toString().substring(0,6));
+		            statement.setString(2, session.getAttribute("course_id").toString());
 		            statement.setString(3, session.getAttribute("Username").toString());
 		            statement.setString(4, fileName);
 		            statement.setString(5, filedesc);
@@ -167,11 +171,28 @@ public class Add extends HttpServlet {
 		}
 		else if(type.equals("instructor")){
 			try{
+				
 				instructor_review_id++;
+				System.out.println(instructor_review_id);
+				String instructor_name=(String)request.getParameter("instructors");
 				String review_text=(String)request.getParameter("Review");
 				st.executeUpdate("Insert into instructorreview values('"+instructor_review_id+"','"
 						+session.getAttribute("instructor_id").toString()+"','"+
 						session.getAttribute("Username").toString()+"','"+review_text+"',0,0);");
+				ResultSet rs;
+				String instructor_id=session.getAttribute("instructor_id").toString();
+				rs=st.executeQuery("Select user_id,review_text from instructorreview where instructor_id='"+
+						instructor_id.toString()+"' order by upvotes limit 10;");
+				int i=0;
+				review_text="";
+					while(rs.next()){
+						review_text+="<br><br><br><br><br><br><div style=\"float:left;margin-left:125px; width: " +
+								"1000px;padding: 25px;text-align: left;font-size: 100%;color:" +
+								"black;border: 1px solid navy;background-color:" +
+								"#f1ffff\"><span style=\"font-size:80%\"><i>by "+rs.getString(1)+"</i></span><p>"+rs.getString(2)+"</p></div><br><br><br>";
+					i++;
+				}
+				session.setAttribute("instructor_review_code", review_text);
 				response.sendRedirect("instructorreview.jsp");
 			}
 			catch(Exception e){

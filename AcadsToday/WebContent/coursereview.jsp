@@ -17,5 +17,15 @@ if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
 <jsp:include page="./coursereview_common.jsp" />
 <br><br><br>
 <%=session.getAttribute("course_review_code") %>
+<form action="course" method="get" >
+<div style="float:left; margin-left:130px;">
+<input type="submit" value="See More" style="background-color:yellow; ">
+</div>
+<input type="hidden" name="select_dept" value="seeMoreReview">
+<input type="hidden" name="Courses" value="deepanjan">
+</form>
+<div style="float:bottom ;">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
 </body>
 </html>
