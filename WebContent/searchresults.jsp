@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>AcadsToday</title>
 <% 
 response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache-Control", "no-store");
@@ -21,6 +21,5 @@ if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
 <%=session.getAttribute("searchresults")%>
 
 </div>
-</form>
 </body>
 </html>

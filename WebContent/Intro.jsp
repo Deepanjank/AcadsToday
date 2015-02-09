@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="../menu.js" ></script>
 <link rel="stylesheet" type="text/css" href="./style.css" media="screen" />
-<title>Insert title here</title>
+<title>AcadsToday</title>
 </head>
 <body>
 <div style="width:1200px;height:308px">
@@ -28,20 +28,20 @@ Your Helper To a Better Course Selection.
 <div style="float:left;margin-left:100px;width:1100px">
 <div style="float:left;width:435px">
 <ul class="navmenu">
-  <li><a href="./Validateuser">HOME</a></li>
+  <li><a href="./loginVal?SignUp=home">HOME</a></li>
   <li><a href="./course" accesskey="1">COURSE</a></li>
   <li><a href="./instructor">INSTRUCTOR</a></li>
   <li><a>SEARCH</a><ul>
    <li><a href="./Search?type=students">Students</a></li>
    <li><a href="./Search?type=newsfeed">NewsFeed</a></li>
   </ul></li>
-  <li><a href="./Add">TIMELINE</a></li>
+  <li><a href="./loginVal?SignUp=timeline">TIMELINE</a></li>
 </ul>
 
 </div>
 <div style="text-align: right;color: green;">
-<form  method="get" action="Validateuser">
-<input type="submit" value="Logout" style="color:green;border:thin;cursor: pointer;background-color:yellow ">
+<form  method="get" action="loginVal">
+<input type="submit" value="Logout" style="color:green;border:thin;cursor: pointer;background-color:#6495ed ">
 <input type="hidden" name="SignUp" value="logout">
 </form>
 </div>

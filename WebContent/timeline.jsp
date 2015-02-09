@@ -4,10 +4,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>AcadsToday</title>
+<%
+response.setHeader("Cache-Control", "no-cache");
+response.setHeader("Cache-Control", "no-store");
+response.setHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
+%>
 </head>
 <body>
 <jsp:include page="./Intro.jsp" />
 <%=session.getAttribute("courses_followed")%>
+<%=session.getAttribute("timeline_code")%>
 </body>
 </html>

@@ -9,7 +9,6 @@ create table student
 	 password		varchar(7),
 	 rollno		varchar(10),
 	 name		varchar(20),
-	 dept_id numeric(2,0),
 	 email    varchar(30),
 	 primary key (user_id)
 	);
@@ -50,11 +49,13 @@ create table newsfeed(
  user_id varchar(15),
  course_id varchar(8),
  news_text varchar(100),
- time_stamp varchar(20),
+ date_stamp date,
+ time_stamp time,
  primary key(news_id),
  foreign key(user_id) references student,
  foreign key(course_id) references course
 );
+
 create table newstag(
  news_id varchar(20),
  tag varchar(20),
@@ -65,20 +66,25 @@ create table coursereview(
  review_id varchar(20),
  course_id varchar(20),
  user_id varchar(15),
- review_text varchar(20),
+ review_text varchar(500),
  downvotes numeric(4),
  upvotes numeric(4),
+ date_stamp date,
+ time_stamp time,
+ 
  primary key(review_id),
  foreign key(course_id) references course,
  foreign key(user_id) references student
 );
-create table coursereview(
+create table instructorreview(
  review_id varchar(20),
  instructor_id varchar(20),
  user_id varchar(15),
- review_text varchar(20),
+ review_text varchar(500),
  downvotes numeric(4),
  upvotes numeric(4),
+ date_stamp date,
+ time_stamp time,
  primary key(review_id),
  foreign key(instructor_id) references instructor,
  foreign key(user_id) references student
@@ -122,22 +128,69 @@ primary key(user_id,review_id),
 foreign key(user_id) references student,
 foreign key(review_id) references coursereview
 );
+drop table material;
 create table material(
 material_id varchar(20),
 course_id  varchar(20),
 user_id   varchar(20),
 materialname varchar(20),
+description varchar(100),
 material   bytea,
-rating   numeric(1,0) check(rating>=0 and rating<6),
+date_stamp date,
+time_stamp time,
 primary key(material_id),
 foreign key(course_id) references course,
 foreign key(user_id) references student
 );
-create table materialrating(
-material_id varchar(20),
+create table coursecomments(
+comment_id varchar(20),
+review_id varchar(20),
 user_id   varchar(20),
-rating   numeric(1,0) check(rating>=0 and rating<6),
-primary key(material_id),
-foreign key(material_id) references material,
+comment_text   varchar(100),
+date_stamp date,
+time_stamp time,
+primary key(comment_id),
+foreign key(review_id) references coursereview,
 foreign key(user_id) references student
 );
+create table instructorcomments(
+comment_id varchar(20),
+review_id varchar(20),
+user_id   varchar(20),
+comment_text   varchar(100),
+date_stamp date,
+time_stamp time,
+primary key(comment_id),
+foreign key(review_id) references instructorreview,
+foreign key(user_id) references student
+);
+create index on Student(user_id);
+create index on follow(user_id);
+create index on coursereview(user_id);
+create index on coursereview(course_id);
+create index on coursevotes(review_id,user_id);
+create index on coursecomments(review_id);
+create index on instructorreview(user_id);
+create index on instructorreview(instructor_id);
+create index on instructorcomments(review_id);
+create index on instructorvotes(review_id,user_id);
+create index on department(dept_id);
+create index on instructor(instructor_id);
+create index on instructorrating(instructor_id,user_id);
+create index on course(course_id);
+create index on courserating(course_id,user_id);
+create index on material(user_id,course_id);
+create index on newsfeed(course_id,date_stamp,time_stamp);
+create index on newstag(tag);
+
+
+
+
+
+
+
+
+
+
+
+

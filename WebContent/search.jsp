@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>AcadsToday</title>
 <% 
 response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache-Control", "no-store");
@@ -19,12 +19,12 @@ if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
 <jsp:include page="./Intro.jsp" />
 <form action="Search" method="post">
 <div>
+<%=session.getAttribute("search_aid") %>
 <div style="float:left;margin-left:400px">
-<input class="required" type="text" name="search" height="20px" width="100px" size="20px" style="margin-left:73px" >
+<input class="required" type="text" name="search" height="30px" width="100px" size="20px" style="margin-left:73px" >
 </div>
-<div style="float:left; margin-left:0px">
-<input type="image" src="./search.jpg" alt="Submit Form" height="30px" width="30px">
-<%=session.getAttribute("search")%>
+<div style="float:left;">
+<input type="image" src="./search.jpeg" alt="Submit Form" height="40px" width="40px">
 </div>
 </div>
 </form>

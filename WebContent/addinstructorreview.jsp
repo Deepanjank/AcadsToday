@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>AcadsToday</title>
 <% 
 response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache-Control", "no-store");
@@ -25,10 +25,13 @@ Enter your Review:<br><br>
 <textarea name="Review" style="width: 600px;height:300px;font-sieze:150"></textarea>
 <br>
 <br>
-<input type="submit" value="Submit Review">
+<input type="submit" value="Submit Review" style="background-color: #6495ed">
 </div>
 <input type="hidden" name="type" value="instructor">
 <input type="hidden" name="add" value="review">
 </form>
+<div style="float:bottom ;margin-bottom:400px">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
 </body>
 </html>

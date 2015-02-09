@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>AcadsToday</title>
 <% 
 response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache-Control", "no-store");
@@ -27,11 +27,14 @@ Select the department:
 	<%=session.getAttribute("departments") %>
 </div>
 <div style="margin-left:300px">
-<input type="submit" value="Select">
+<input type="submit" value="Select" style="background-color:#6495ed;">
 <input type="hidden" name="select_dept" value="instructor">
 </div>
 </div>
 </form>
 <%=session.getAttribute("instructors") %>
+<div style="float:bottom ;">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
 </body>
 </html>

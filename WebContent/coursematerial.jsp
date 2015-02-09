@@ -13,25 +13,17 @@ response.setDateHeader("Expires", 0);
 if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
 %>
 </head>
-<body >
-
+<body>
 <jsp:include page="./coursereview_common.jsp" />
-<br><br><br><br>
-<form action="Add" method="post" style="float:left;margin-left:100px">
-<div style="margin-left:200px">
-Enter your Review:<br><br>
+<br><br><br>
+<%=session.getAttribute("course_material_code") %>
+<form action="course" method="get" >
+<div style="float:left;margin-left:130px">
+<input type="submit" value="See More" style="background-color:#6495ed">
 </div>
-<div style="margin-left:200px">
-<textarea name="Review" style="width: 600px;height:300px;font-sieze:150"></textarea>
-<br>
-<br>
-<input type="submit" value="Submit Review" style="background-color: #6495ed">
-</div>
-<input type="hidden" name="type" value="course">
-<input type="hidden" name="add" value="review">
+<input type="hidden" name="select_dept" value="seeMoreMaterial">
 </form>
-<div style="float:bottom ;margin-bottom:400px">
 <br />&nbsp;<br />&nbsp;<br />&nbsp;
-</div>
+
 </body>
 </html>

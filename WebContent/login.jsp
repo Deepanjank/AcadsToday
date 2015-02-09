@@ -33,7 +33,7 @@ Your Helper To a Better Course Selection.
 <div style="width:1200px;height:300px;margin-top:20px">
 	<div style="float:left; margin-left:100px;width:580px;background-color:#6699FF">
 		<div style="margin-left:20px;">
-			<form action="Validateuser" method="post">
+			<form action="loginVal" method="post">
 				 <H3 >Login</H3>
 				 <div style="float:left">
 				 	<div style="float:left">
@@ -46,7 +46,7 @@ Your Helper To a Better Course Selection.
 				 	</div>
 				 </div>
 				 <div style="margin-top:80px;margin-left:400px">
-				 	<input type="submit" value="Log In">
+				 	<input type="submit" value="Log In" style="background-color: #6495ed">
 				 	<input type="hidden" name="SignUp" value="login"><br>
 				 </div>
 				 <br>
@@ -58,34 +58,30 @@ Your Helper To a Better Course Selection.
 	</div>
 	<div style="margin-left:700px; background-color:#FFCC66">
 		<div style="margin-left:40px; padding:10px">
-			<form action="Validateuser" method="post">
+			<form action="loginVal" method="post">
 				 <H1>Sign Up</H1> 
 				 <br/>
 				 New Username
-				 <input type="text" name="New UserId"size="20px" style="margin-left:30px" required>
+				 <input type="text" name="New UserId"size="20px" style="margin-left:30px" class="class="required"">
 				 <br>
 				 <br>
 				 Password
-				 <input type="password" name="New Password" size="20px" style="margin-left:68px" required>
+				 <input type="password" name="New Password" size="20px" style="margin-left:68px" class="required">
 				 <br>
 				 <br>
 				 Roll Number
-				 <input type="text" name="rollno" size="20px" style="margin-left:45px" required>
+				 <input type="text" name="rollno" size="20px" style="margin-left:45px" class="required">
 				 <br>
 				 <br>
 				 Name
-				 <input type="text" name="name" size="20px" style="margin-left:91px" required>
-				 <br>
-				 <br>
-				 Department
-				 <input type="text" name="dept" size="20px" style="margin-left:53px" required>
+				 <input type="text" name="name" size="20px" style="margin-left:91px" class="required">
 				 <br>
 				 <br>
 				 Email Id
-				 <input type="text" name="email" size="20px" style="margin-left:73px" required>
+				 <input type="text" name="email" size="20px" style="margin-left:73px" class="required">
 				 <br>
 				 <br>
-				 <input type="submit" value="submit">
+				 <input type="submit" value="submit" style="background-color: #6495ed">
 				 <input type="hidden" name="SignUp" value="reg">
 			 </form>
 		</div>
@@ -93,5 +89,8 @@ Your Helper To a Better Course Selection.
 </div>
 <br>
 <br>
+<div style="float:bottom ;">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
 </body>
 </html>

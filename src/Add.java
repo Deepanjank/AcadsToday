@@ -1,16 +1,13 @@
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -72,24 +69,7 @@ public class Add extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		String followed = "<div style=\"float:left; margin-left:100px\"> <b>Courses followed:</b>";
-		ResultSet rs;
-		String strUserId = (String)session.getAttribute("Username");
-		try{
-			rs = st.executeQuery("select course_id,title from course natural join follow " +
-					"where user_id='"+strUserId+"'");
-			while(rs.next()){	
-				followed+="<br>"+ rs.getString(1) +" &nbsp; &nbsp; " + rs.getString(2);
-			}
-			followed+= "</div>";
-			session.setAttribute("courses_followed",followed);
-			response.sendRedirect("timeline.jsp");
-		}
-		catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -106,22 +86,23 @@ public class Add extends HttpServlet {
 					//Timestamp timestamp = new java.sql.Timestamp((dateTime).getTime());
 					//Date date = new Date();
 					//Timestamp timestamp = new Timestamp(date.getTime());
-					String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-					System.out.println(timestamp);
+
+					String datestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+					String timestamp = new SimpleDateFormat("hh:mm:ss").format(new Date());System.out.println(timestamp);
 					String news_text=(String)request.getParameter("News");
 					String tags=(String)request.getParameter("Tags");
 					//ResultSet rs;
 					st.executeUpdate("Insert into newsfeed values('"+news_id+"','"
 							+session.getAttribute("Username").toString()+"','"+
-							session.getAttribute("course_name").toString().substring(0, 6)
-							+"','"+news_text+"','"+timestamp+"');");
+							session.getAttribute("course_id")
+							+"','"+news_text+"','"+datestamp+"','"+timestamp+"');");
 					String[] temp=tags.split(" ");
 					for(int i=0;i<temp.length;i++)
 					{
 						System.out.println(temp[i]);
 						st.executeUpdate("Insert into newstag values('"+news_id+"','"+temp[i]+"');");
 					}
-					response.sendRedirect("coursereview.jsp");
+					response.sendRedirect("postnews.jsp");
 				}
 				catch(Exception e){
 					news_id--;
@@ -130,27 +111,17 @@ public class Add extends HttpServlet {
 			}
 			else if(method.equals("review")){
 				try{
-				course_review_id++;
-				String review_text=(String)request.getParameter("Review");
-				st.executeUpdate("Insert into coursereview values('"+course_review_id+"','"
-						+session.getAttribute("course_name").toString().substring(0, 6)+"','"+
-						session.getAttribute("Username").toString()+"','"+review_text+"',0,0);");
-				String course_name=session.getAttribute("course_name").toString();
-				ResultSet rs;
-				rs=st.executeQuery("Select review_text from coursereview where course_id='"+
-						course_name.toString().substring(0,6)+"';");
-				int i=0;
-				review_text="";
-				while(rs.next() && i<=10){
-					review_text+="<br><br><br><div style=\"float:left;margin-left:125px; width: " +
-							"1000px;padding: 25px;text-align: left;font-size: 100%;color:" +
-							"black;border: 1px solid navy;border-radius:25px;background-color:" +
-							"#ffe4b5\">"+rs.getString(1)+"</div><br><br><br>";
-					i++;
-				}
-				session.setAttribute("course_review_code", review_text);
-				session.setAttribute("course_name",course_name);
-				response.sendRedirect("coursereview.jsp");
+					course_review_id++;
+					String review_text=(String)request.getParameter("Review");
+					String datestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+					String timestamp = new SimpleDateFormat("hh:mm:ss").format(new Date());
+					st.executeUpdate("Insert into coursereview values('"+course_review_id+"','"
+							+session.getAttribute("course_id").toString()+"','"+
+							session.getAttribute("Username").toString()+"','"+review_text+"',0,0,'"+datestamp+"','"+timestamp+"');");
+					String course_name=session.getAttribute("course_id").toString();
+					ResultSet rs;
+
+					response.sendRedirect("addcoursereview.jsp");
 				}
 				catch(Exception e){
 					course_review_id--;
@@ -160,31 +131,43 @@ public class Add extends HttpServlet {
 			else if(method.equals("material")){
 				try{
 					material_id++;
+
+					String datestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+					String timestamp = new SimpleDateFormat("hh:mm:ss").format(new Date());
+					System.out.println(material_id);
 					InputStream inputStream = null;
 					Part filePart = request.getPart("uploadField");
 					String fileName = request.getParameter("dispName");
-			        if (filePart != null) {
-			        	System.out.print("deepanjan");
-			            // prints out some information for debugging
-			            System.out.println(filePart.getName());
-			            System.out.println(filePart.getSize());
-			            System.out.println(filePart.getContentType());
-			            inputStream = filePart.getInputStream();
-			        }
-			     // constructs SQL statement
-			        String sql = "INSERT INTO material (material_id, course_id, user_id, materialname, material, rating) values (?, ?, ?,?,?,?)";
-			        PreparedStatement statement = conn1.prepareStatement(sql);
-		            statement.setString(1, ""+material_id);
-		            statement.setString(2, session.getAttribute("course_name").toString().substring(0,6));
-		            statement.setString(3, session.getAttribute("Username").toString());
-		            statement.setString(4, "iam deepanjan");
-		          
-		            if (inputStream != null){
-		                statement.setBinaryStream(5, inputStream,(int)filePart.getSize());
-		            }
-		            statement.setInt(6,0);
-		            statement.executeUpdate();
-		            response.sendRedirect("./coursereview.jsp");
+					String filedesc = request.getParameter("description");
+					String fileName2 = request.getParameter("filename");
+					System.out.println(fileName2);
+					if (filePart != null) {
+						System.out.print("deepanjan");
+						// prints out some information for debugging
+						System.out.println(filePart.getName());
+						System.out.println(filePart.getSize());
+						System.out.println(filePart.getContentType());
+						inputStream = filePart.getInputStream();
+					}
+					// constructs SQL statement
+					String sql = "INSERT INTO material (material_id, course_id, user_id, materialname, description, material, date_stamp, time_stamp) values (?, ?, ?,?,?,?,?,?)";
+					PreparedStatement statement = conn1.prepareStatement(sql);
+					statement.setString(1, ""+material_id);
+					statement.setString(2, session.getAttribute("course_id").toString());
+					statement.setString(3, session.getAttribute("Username").toString());
+					statement.setString(4, fileName);
+					statement.setString(5, filedesc);
+					if (inputStream != null){
+						statement.setBinaryStream(6, inputStream,(int)filePart.getSize());
+					}
+					statement.setDate(7,null);
+					statement.setTime(8,null);
+
+					statement.executeUpdate();
+					st.executeUpdate("update material set date_stamp='"+datestamp+"' where material_id='"+material_id+"';");
+					st.executeUpdate("update material set time_stamp='"+timestamp+"' where material_id='"+material_id+"';");
+
+					response.sendRedirect("./addMaterial.jsp");
 				}
 				catch(Exception e){
 					material_id--;
@@ -195,11 +178,15 @@ public class Add extends HttpServlet {
 		else if(type.equals("instructor")){
 			try{
 				instructor_review_id++;
+				String datestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+				String timestamp = new SimpleDateFormat("hh:mm:ss").format(new Date());
+				System.out.println(instructor_review_id);
+				String instructor_name=(String)request.getParameter("instructors");
 				String review_text=(String)request.getParameter("Review");
 				st.executeUpdate("Insert into instructorreview values('"+instructor_review_id+"','"
 						+session.getAttribute("instructor_id").toString()+"','"+
-						session.getAttribute("Username").toString()+"','"+review_text+"',0,0);");
-				response.sendRedirect("instructorreview.jsp");
+						session.getAttribute("Username").toString()+"','"+review_text+"',0,0,'"+datestamp+"','"+timestamp+"');");
+				response.sendRedirect("addinstructorreview.jsp");
 			}
 			catch(Exception e){
 				instructor_review_id--;

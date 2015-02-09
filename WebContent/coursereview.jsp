@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>AcadsToday</title>
 <% 
 response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache-Control", "no-store");
@@ -17,5 +17,15 @@ if(session.getAttribute("Username")==null){response.sendRedirect("login.jsp");}
 <jsp:include page="./coursereview_common.jsp" />
 <br><br><br>
 <%=session.getAttribute("course_review_code") %>
+<div style="float:left; margin-left:130px;">
+<form action="course" method="get"  >
+<input type="submit" value="See More" style="background-color:#6495ed"; ">
+<input type="hidden" name="select_dept" value="seeMoreReview">
+<input type="hidden" name="Courses" value="deepanjan">
+</form>
+</div>
+<div style="float:bottom ;">
+<br />&nbsp;<br />&nbsp;<br />&nbsp;
+</div>
 </body>
 </html>
